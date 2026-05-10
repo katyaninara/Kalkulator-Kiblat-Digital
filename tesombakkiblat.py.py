@@ -90,8 +90,8 @@ with col2:
     st.pydeck_chart(pdk.Deck(
         map_style=None, # Supaya peta dunianya muncul gratis & stabil
         initial_view_state=pdk.ViewState(
-            latitude=lat_input,
-            longitude=lon_input,
+            latitude=lat,
+            longitude=lon,
             zoom=1,
             pitch=0,
         ),
