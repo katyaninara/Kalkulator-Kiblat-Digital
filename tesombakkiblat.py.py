@@ -41,29 +41,27 @@ else:
 # Bungkus rumus perhitungan kamu di dalam 'if' ini biar nggak error pas GPS belum masuk
 if lat and lon:
     # --- LANJUTAN RUMUS PERHITUNGAN KAMU DI SINI ---
-
 # --- LOGIKA PERHITUNGAN (Sesuai kode aslimu) ---
-lat_kaaba_deg = 21.4225
-lon_kaaba_deg = 39.8262
-
-lat_u = np.radians(lat_input)
-lon_u = np.radians(lon_input)
-lat_k = np.radians(lat_kaaba_deg)
-lon_k = np.radians(lon_kaaba_deg)
-delta_lon = lon_k - lon_u
+    lat_kaaba_deg = 21.4225
+    lon_kaaba_deg = 39.8262
+    lat_u = np.radians(lat_input)
+    lon_u = np.radians(lon_input)
+    lat_k = np.radians(lat_kaaba_deg)
+    lon_k = np.radians(lon_kaaba_deg)
+    delta_lon = lon_k - lon_u
 
 # 1. Rumus Arah Kiblat
-num = np.sin(delta_lon)
-den = (np.cos(lat_u) * np.tan(lat_k)) - (np.sin(lat_u) * np.cos(delta_lon))
-qibla_rad = np.arctan2(num, den)
-qibla_deg = (np.degrees(qibla_rad) + 360) % 360
+    num = np.sin(delta_lon)
+    den = (np.cos(lat_u) * np.tan(lat_k)) - (np.sin(lat_u) * np.cos(delta_lon))
+    qibla_rad = np.arctan2(num, den)
+    qibla_deg = (np.degrees(qibla_rad) + 360) % 360
 
 # 2. Rumus Jarak (Haversine Formula)
-dlon = lon_k - lon_u
-dlat = lat_k - lat_u
-a = np.sin(dlat/2)**2 + np.cos(lat_u) * np.cos(lat_k) * np.sin(dlon/2)**2
-c = 2 * np.arcsin(np.sqrt(a))
-jarak_km = 6371 * c 
+    dlon = lon_k - lon_u
+    dlat = lat_k - lat_u
+    a = np.sin(dlat/2)**2 + np.cos(lat_u) * np.cos(lat_k) * np.sin(dlon/2)**2
+    c = 2 * np.arcsin(np.sqrt(a))
+    jarak_km = 6371 * c 
 
 # --- TAMPILAN HASIL ---
 col1, col2 = st.columns([1, 1.2]) # col2 agak diperlebar untuk peta
