@@ -18,19 +18,29 @@ st.markdown("---")
 st.subheader("📍 Tentukan Lokasi Anda")
 loc = get_geolocation()
 
-if loc:
-    # Jika GPS diizinkan
-    lat_input = loc['coords']['latitude']
-    lon_input = loc['coords']['longitude']
-    st.success(f"✅ Lokasi terdeteksi otomatis: {lat_input:.4f}, {lon_input:.4f}")
+# --- BAGIAN PENGATURAN LOKASI ---
+metode = st.radio("Pilih Metode Lokasi:", ["Otomatis (GPS)", "Manual (Input)"])
+
+if metode == "Otomatis (GPS)":
+    loc = get_geolocation()
+    if loc:
+        lat = loc['coords']['latitude']
+        lon = loc['coords']['longitude']
+        st.success(f"Lokasi Terdeteksi: {lat}, {lon}")
+    else:
+        st.warning("Menunggu GPS... Kalau lama, pastikan Izin Lokasi di browser sudah 'Allow'.")
+        lat, lon = None, None
 else:
-    # Jika GPS belum aktif/ditolak, munculkan input manual
-    st.warning("Menunggu izin GPS... Atau masukkan manual di bawah:")
-    col_lat, col_lon = st.columns(2)
-    with col_lat:
-        lat_input = st.number_input("Lintang (Lat):", value=-6.2000, format="%.4f")
-    with col_lon:
-        lon_input = st.number_input("Bujur (Lon):", value=106.8167, format="%.4f")
+    # Input manual supaya kalau GPS HP temenmu error, aplikasi tetep jalan
+    col1, col2 = st.columns(2)
+    with col1:
+        lat = st.number_input("Lintang (Latitude):", value=-7.8579, format="%.4f")
+    with col2:
+        lon = st.number_input("Bujur (Longitude):", value=111.4933, format="%.4f")
+
+# Bungkus rumus perhitungan kamu di dalam 'if' ini biar nggak error pas GPS belum masuk
+if lat and lon:
+    # --- LANJUTAN RUMUS PERHITUNGAN KAMU DI SINI ---
 
 # --- LOGIKA PERHITUNGAN (Sesuai kode aslimu) ---
 lat_kaaba_deg = 21.4225
