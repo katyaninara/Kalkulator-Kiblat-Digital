@@ -15,8 +15,6 @@ st.write("Aplikasi ini membantu mencari arah Ka'bah dari lokasi mana pun di bumi
 st.markdown("---")
 
 # --- FITUR 1: DETEKSI LOKASI (Disederhanakan agar tidak dobel) ---
-st.subheader("📍 Tentukan Lokasi Anda")
-loc = get_geolocation()
 
 # --- BAGIAN PENGATURAN LOKASI ---
 metode = st.radio("Pilih Metode Lokasi:", ["Otomatis (GPS)", "Manual (Input)"])
