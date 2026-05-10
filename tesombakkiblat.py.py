@@ -108,7 +108,7 @@ with col2:
             # Layer Titik Biru di lokasi kamu
             pdk.Layer(
                 'ScatterplotLayer',
-                data=pd.DataFrame([{'lat': lat_input, 'lon': lon_input}]),
+                data=pd.DataFrame([{'lat': lat, 'lon': lon}]),
                 get_position='[lon, lat]',
                 get_color=[0, 128, 255],
                 get_radius=200000,
@@ -154,7 +154,7 @@ e_time = 9.87 * math.sin(2 * b) - 7.53 * math.cos(b) - 1.5 * math.sin(b)
 
 # 3. RUMUS MENCARI JAM SORE (Sudut Waktu Matahari di Azimut Kiblat)
 # A = Azimut Kiblat (294.45), phi = Lintang, delta = Deklinasi
-phi = lat_input
+phi = lat
 delta = declination
 A_rad = math.radians(qibla_deg)
 phi_rad = math.radians(phi)
@@ -167,7 +167,7 @@ cos_t = (math.tan(phi_rad) / math.tan(A_rad)) - (math.sin(delta_rad) / (math.cos
 
 try:
     # 1. Konversi Lintang, Deklinasi, dan Azimut ke Radian
-    phi_rad = math.radians(lat_input)
+    phi_rad = math.radians(lat)
     delta_rad = math.radians(declination)
     A_rad = math.radians(qibla_deg)
     
@@ -176,7 +176,7 @@ try:
     
     # 3. Hitung jam sore secara otomatis (WIB)
     t_hour = math.degrees(math.acos(cos_t)) / 15
-    jam_sore_desimal = (12 + (105 - lon_input)/15 - e_time/60) + t_hour
+    jam_sore_desimal = (12 + (105 - lon)/15 - e_time/60) + t_hour
     
     jam_s = int(jam_sore_desimal)
     menit_s = int((jam_sore_desimal - jam_s) * 60)
