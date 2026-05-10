@@ -42,8 +42,8 @@ if lat and lon:
 # --- LOGIKA PERHITUNGAN (Sesuai kode aslimu) ---
     lat_kaaba_deg = 21.4225
     lon_kaaba_deg = 39.8262
-    lat_u = np.radians(lat_input)
-    lon_u = np.radians(lon_input)
+    lat_u = np.radians(lat)
+    lon_u = np.radians(lon)
     lat_k = np.radians(lat_kaaba_deg)
     lon_k = np.radians(lon_kaaba_deg)
     delta_lon = lon_k - lon_u
