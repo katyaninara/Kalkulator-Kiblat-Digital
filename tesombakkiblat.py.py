@@ -82,7 +82,7 @@ with col2:
     
     # 1. BUAT DULU DATANYA (Jangan sampai ketinggalan!)
     df_garis = pd.DataFrame([{
-        "start": [lon_input, lat_input],
+        "start": [lon, lat],
         "end": [39.8262, 21.4225] # Koordinat Ka'bah
     }])
     
