@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import pydeck as pdk  # Tambahkan library ini untuk menggambar garis
+import pydeck as pdk  
 import datetime #
 import math #
 from streamlit_js_eval import get_geolocation
@@ -14,7 +14,7 @@ st.write("Proyek Mata Kuliah: Teknologi Hisab Rukyat")
 st.write("Aplikasi ini membantu mencari arah Ka'bah dari lokasi mana pun di bumi.")
 st.markdown("---")
 
-# --- FITUR 1: DETEKSI LOKASI (Disederhanakan agar tidak dobel) ---
+# --- FITUR 1: DETEKSI LOKASI ---
 
 # --- BAGIAN PENGATURAN LOKASI ---
 metode = st.radio("Pilih Metode Lokasi:", ["Otomatis (GPS)", "Manual (Input)"])
@@ -29,17 +29,14 @@ if metode == "Otomatis (GPS)":
         st.warning("Menunggu GPS... Kalau lama, pastikan Izin Lokasi di browser sudah 'Allow'.")
         lat, lon = None, None
 else:
-    # Input manual supaya kalau GPS HP temenmu error, aplikasi tetep jalan
+    # Input manual 
     col1, col2 = st.columns(2)
     with col1:
         lat = st.number_input("Lintang (Latitude):", value=-7.8579, format="%.4f")
     with col2:
         lon = st.number_input("Bujur (Longitude):", value=111.4933, format="%.4f")
 
-# Bungkus rumus perhitungan kamu di dalam 'if' ini biar nggak error pas GPS belum masuk
 if lat and lon:
-    # --- LANJUTAN RUMUS PERHITUNGAN KAMU DI SINI ---
-# --- LOGIKA PERHITUNGAN (Sesuai kode aslimu) ---
     lat_kaaba_deg = 21.4225
     lon_kaaba_deg = 39.8262
     lat_u = np.radians(lat)
@@ -62,7 +59,7 @@ if lat and lon:
     jarak_km = 6371 * c 
 
 # --- TAMPILAN HASIL ---
-col1, col2 = st.columns([1, 1.2]) # col2 agak diperlebar untuk peta
+col1, col2 = st.columns([1, 1.2]) 
 
 with col1:
     st.markdown("### 📊 Hasil Analisis")
@@ -80,15 +77,15 @@ with col1:
 with col2:
     st.markdown("### 🗺️ Visualisasi Jalur")
     
-    # 1. BUAT DULU DATANYA (Jangan sampai ketinggalan!)
+    # 1. DATA 
     df_garis = pd.DataFrame([{
         "start": [lon, lat],
         "end": [39.8262, 21.4225] # Koordinat Ka'bah
     }])
     
-    # 2. BARU GAMBAR PETANYA
+    # 2. GAMBAR PETA
     st.pydeck_chart(pdk.Deck(
-        map_style=None, # Supaya peta dunianya muncul gratis & stabil
+        map_style=None, 
         initial_view_state=pdk.ViewState(
             latitude=lat,
             longitude=lon,
@@ -105,7 +102,7 @@ with col2:
                 get_color=[255, 0, 0, 200],
                 get_width=5,
             ),
-            # Layer Titik Biru di lokasi kamu
+            # Layer Titik Biru di lokasi kita
             pdk.Layer(
                 'ScatterplotLayer',
                 data=pd.DataFrame([{'lat': lat, 'lon': lon}]),
@@ -115,7 +112,7 @@ with col2:
             ),
         ],
     ))
-# --- PANDUAN PRAKTEK KOMPAS HP (TIDAK DIUBAH) ---
+# --- PANDUAN PRAKTEK KOMPAS HP ---
 st.divider()
 st.subheader("🧭 Panduan Mengarahkan Kiblat")
 
@@ -152,8 +149,6 @@ declination = 23.45 * math.sin(math.radians(360 / 365 * (day_of_year - 81)))
 b = math.radians(360 / 364 * (day_of_year - 81))
 e_time = 9.87 * math.sin(2 * b) - 7.53 * math.cos(b) - 1.5 * math.sin(b)
 
-# 3. RUMUS MENCARI JAM SORE (Sudut Waktu Matahari di Azimut Kiblat)
-# A = Azimut Kiblat (294.45), phi = Lintang, delta = Deklinasi
 phi = lat
 delta = declination
 A_rad = math.radians(qibla_deg)
@@ -162,8 +157,6 @@ delta_rad = math.radians(delta)
 
 # Mencari sudut waktu (t)
 cos_t = (math.tan(phi_rad) / math.tan(A_rad)) - (math.sin(delta_rad) / (math.cos(phi_rad) * math.sin(A_rad)))
-# Kita ambil pendekatan jam sore yang bayangannya panjang
-# HAPUS BAGIAN ERROR TADI, TERUS TEMPEL INI:
 
 try:
     # 1. Konversi Lintang, Deklinasi, dan Azimut ke Radian
@@ -171,10 +164,10 @@ try:
     delta_rad = math.radians(declination)
     A_rad = math.radians(qibla_deg)
     
-    # 2. Rumus Sudut Waktu (t) untuk mencari JAM SORE
+    # 2. Rumus Sudut Waktu (t) 
     cos_t = (math.tan(phi_rad) / math.tan(A_rad)) - (math.sin(delta_rad) / (math.cos(phi_rad) * math.sin(A_rad)))
     
-    # 3. Hitung jam sore secara otomatis (WIB)
+    # 3. Hitung jam secara otomatis (WIB)
     t_hour = math.degrees(math.acos(cos_t)) / 15
     jam_sore_desimal = (12 + (105 - lon)/15 - e_time/60) + t_hour
     
